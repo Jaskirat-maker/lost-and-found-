@@ -85,3 +85,20 @@ See `frontend/.env.example`.
   - Deploy `backend/` with `Dockerfile` or as a Java service.
   - Set env vars from `backend/.env.example`.
   - Point `CORS_ALLOWED_ORIGINS` to your frontend domain(s).
+
+### Deploy backend on Render (recommended)
+
+This repo includes a Render Blueprint at `render.yaml`.
+
+1. In Render: **New +** → **Blueprint**
+2. Select this GitHub repo
+3. Render will create:
+   - a **PostgreSQL** database (`lostfound-db`)
+   - a **Web Service** (`lostfound-backend`) using `backend/Dockerfile`
+4. After deploy, update:
+   - **`CORS_ALLOWED_ORIGINS`** to your Vercel domain (example: `https://your-frontend.vercel.app`)
+   - Optionally set **`ADMIN_EMAIL`**, **`ADMIN_PASSWORD`**, **`ADMIN_NAME`** to seed an admin
+
+Notes:
+- Render’s database connection string is `postgres://...`; the backend automatically converts it to a JDBC URL at startup.
+- For persistent image uploads on Render, attach a disk and point `UPLOAD_DIR` to that mount path.

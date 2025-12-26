@@ -1,0 +1,50 @@
+databases:
+  - name: lostfound-db
+    databaseName: lostfound
+    user: lostfound
+    plan: free
+
+services:
+  - type: web
+    name: lostfound-backend
+    env: docker
+    rootDir: backend
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 8080
+      # Render provides DATABASE_URL like postgres://...; backend converts to JDBC automatically.
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lostfound-db
+          property: connectionString
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: lostfound-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: lostfound-db
+          property: password
+      - key: JPA_DDL_AUTO
+        value: update
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ALLOWED_ORIGINS
+        value: http://localhost:5173
+      - key: COLLEGE_EMAIL_DOMAIN
+        value: college.edu
+      # Optional admin seeding (set these in Render UI if you want)
+      # - key: ADMIN_EMAIL
+      #   value: registrar@college.edu
+      # - key: ADMIN_PASSWORD
+      #   value: ChangeMeAdmin123!
+      # - key: ADMIN_NAME
+      #   value: Registrar Admin
+      # Uploads (ephemeral by default on free plan; add a disk in Render for persistence)
+      - key: UPLOAD_DIR
+        value: /tmp/uploads
+      - key: UPLOAD_PUBLIC_PATH
+        value: /uploads
+
