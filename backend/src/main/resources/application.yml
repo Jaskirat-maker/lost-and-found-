@@ -26,6 +26,10 @@ spring:
           auth: ${MAIL_SMTP_AUTH:true}
           starttls:
             enable: ${MAIL_SMTP_STARTTLS:true}
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:5MB}
+      max-request-size: ${MAX_REQUEST_SIZE:6MB}
 
 app:
   college-email-domain: ${COLLEGE_EMAIL_DOMAIN:college.edu}
