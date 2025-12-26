@@ -1,10 +1,18 @@
 import StatusBadge from './StatusBadge.jsx'
 
 export default function ItemCard({ item }) {
+  const apiBase = import.meta.env.VITE_API_BASE_URL || window.location.origin
+  const imageSrc =
+    item.imageUrl && typeof item.imageUrl === 'string'
+      ? item.imageUrl.startsWith('http')
+        ? item.imageUrl
+        : new URL(item.imageUrl, apiBase).toString()
+      : null
+
   return (
     <div className="card overflow-hidden">
-      {item.imageUrl ? (
-        <img src={item.imageUrl} alt={item.itemName} className="h-44 w-full object-cover" />
+      {imageSrc ? (
+        <img src={imageSrc} alt={item.itemName} className="h-44 w-full object-cover" />
       ) : (
         <div className="h-44 w-full bg-gradient-to-br from-slate-200 to-slate-100 dark:from-slate-800 dark:to-slate-900" />
       )}
